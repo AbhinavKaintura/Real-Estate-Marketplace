@@ -135,10 +135,17 @@ export default function AddProperty() {
     setError('');
     
     try {
+      // Generate a safe filename
+      const timestamp = Date.now();
+      const fileName = `${timestamp}-${image!.name.replace(/[^a-zA-Z0-9.]/g, '_')}`;
+      
       // Upload image to Firebase Storage
-      const storageRef = ref(storage, `properties/${Date.now()}-${image!.name}`);
+      const storageRef = ref(storage, `properties/${fileName}`);
+      
+      // Create upload task
       const uploadTask = uploadBytesResumable(storageRef, image!);
       
+      // Monitor upload progress and handle completion
       uploadTask.on(
         'state_changed',
         (snapshot) => {
@@ -149,45 +156,60 @@ export default function AddProperty() {
         },
         (error) => {
           console.error('Error uploading image:', error);
-          setError('Failed to upload image. Please try again.');
+          
+          // Show more specific error messages based on the error code
+          if (error.code === 'storage/unauthorized') {
+            setError('CORS error: Not authorized to access Firebase Storage. Please check your Firebase Storage rules and CORS configuration.');
+          } else if (error.code === 'storage/canceled') {
+            setError('Upload was canceled');
+          } else {
+            setError(`Failed to upload image: ${error.message}`);
+          }
+          
           setLoading(false);
         },
         async () => {
-          // Get download URL
-          const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-          
-          // Add property data to Firestore
-          await addDoc(collection(db, 'properties'), {
-            title: formData.title,
-            status: formData.status,
-            price: Number(formData.price),
-            address: formData.address,
-            city: formData.city,
-            state: formData.state,
-            zipCode: formData.zipCode,
-            beds: Number(formData.beds),
-            baths: Number(formData.baths),
-            sqft: Number(formData.sqft),
-            description: formData.description,
-            image: downloadURL,
-            createdAt: new Date().toISOString(),
-          });
-          
-          setLoading(false);
-          setSuccess(true);
-          setFormData(initialFormData);
-          setImage(null);
-          setImagePreview(null);
-          setUploadProgress(0);
-          
-          setTimeout(() => {
-            router.push('/live-auctions'); 
-          }, 2000);
+          try {
+            // Get download URL
+            const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+            
+            // Add property data to Firestore
+            await addDoc(collection(db, 'properties'), {
+              title: formData.title,
+              status: formData.status,
+              price: Number(formData.price),
+              address: formData.address,
+              city: formData.city,
+              state: formData.state,
+              zipCode: formData.zipCode,
+              beds: Number(formData.beds),
+              baths: Number(formData.baths),
+              sqft: Number(formData.sqft),
+              description: formData.description,
+              image: downloadURL,
+              createdAt: new Date().toISOString(),
+            });
+            
+            setLoading(false);
+            setSuccess(true);
+            setFormData(initialFormData);
+            setImage(null);
+            setImagePreview(null);
+            setUploadProgress(0);
+            
+            setTimeout(() => {
+              router.push('/properties');
+            }, 2000);
+          } catch (docError) {
+            console.error('Error adding document:', docError);
+            setError('Successfully uploaded image but failed to save property data. Please try again.');
+            setLoading(false);
+          }
         }
       );
     } catch (error) {
-      console.error('Error adding property:', error);
-      setError('Failed to add property. Please try again.');
+      console.error('Error initializing upload:', error);
+      setError('Failed to start upload process. Please try again.');
       setLoading(false);
     }
   };
@@ -195,12 +217,15 @@ export default function AddProperty() {
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-md overflow-hidden">
+        {/* Header */}
         <div className="bg-gradient-to-r from-blue-600 to-blue-800 py-6 px-8">
           <h1 className="text-2xl font-bold text-white">Add New Property</h1>
           <p className="text-blue-100 mt-1">Fill in the details to list your property</p>
         </div>
         
+        {/* Form */}
         <form onSubmit={handleSubmit} className="p-8">
+          {/* Success message */}
           {success && (
             <div className="mb-6 bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded flex items-center">
               <FiCheck className="mr-2" />
@@ -208,12 +233,14 @@ export default function AddProperty() {
             </div>
           )}
           
+          {/* Error message */}
           {error && (
             <div className="mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
               {error}
             </div>
           )}
           
+          {/* Image upload section */}
           <div className="mb-8">
             <label className="block text-gray-700 text-sm font-semibold mb-2">
               Property Image <span className="text-red-500">*</span>
@@ -256,7 +283,10 @@ export default function AddProperty() {
             </div>
           </div>
           
+          {/* Form content continues as before... */}
+          {/* All the form fields remain the same */}
           <div className="space-y-6">
+            {/* Basic property info */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label htmlFor="title" className="block text-gray-700 text-sm font-semibold mb-2">
@@ -299,6 +329,7 @@ export default function AddProperty() {
               </div>
             </div>
             
+            {/* Price */}
             <div>
               <label htmlFor="price" className="block text-gray-700 text-sm font-semibold mb-2">
                 Price <span className="text-red-500">*</span>
@@ -320,6 +351,7 @@ export default function AddProperty() {
               </div>
             </div>
             
+            {/* Address */}
             <div className="space-y-4">
               <h3 className="text-lg font-medium text-gray-800 border-b pb-2">Location Details</h3>
               
