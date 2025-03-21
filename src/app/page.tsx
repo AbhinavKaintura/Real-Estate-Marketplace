@@ -8,9 +8,9 @@ import Services from '@/components/home/services/page';
 import Footer from '@/components/footer/page';
 
 
+
 export default function Home() {
   return (
-
     <LazyMotion features={domAnimation} >
     <div className="min-h-screen">
         <Head>
