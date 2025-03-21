@@ -52,7 +52,7 @@ const Footer = () => {
     {
       title: 'Services',
       links: [
-        { name: 'Price Prediction', href: '/price-prediction' },
+        { name: 'Price Prediction', href: '/predict' },
         { name: 'Live Auction', href: '/live-auction' },
         { name: 'Rental Property', href: '/rental-property' },
         { name: 'Lease property maintenance', href: '/lease-property-maintenance' },
