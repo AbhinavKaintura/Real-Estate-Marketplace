@@ -33,9 +33,8 @@ export default function Rental() {
   useEffect(() => {
     const fetchRentalProperties = async () => {
       try {
-        // Create a query to filter only properties with status "rented"
         const propertiesCollection = collection(db, 'properties');
-        const rentalQuery = query(propertiesCollection, where("status", "==", "rented"));
+        const rentalQuery = query(propertiesCollection, where("status", "==", "FOR RENT"));
         const propertiesSnapshot = await getDocs(rentalQuery);
         
         const rentalPropertiesList = propertiesSnapshot.docs.map(doc => ({
@@ -100,7 +99,7 @@ export default function Rental() {
             <div className="p-6">
               <div className="mb-4">
                 <h2 className="text-xl font-bold text-gray-800 mb-1">{property.title || 'Rental Property'}</h2>
-                <h3 className="text-2xl font-bold text-gray-800">${property.price?.toLocaleString() || '0'}/month</h3>
+                <h3 className="text-2xl font-bold text-gray-800">₹{property.price?.toLocaleString() || '0'}/month</h3>
                 <div className="flex items-start mt-2 text-gray-600">
                   <HiOutlineLocationMarker className="mt-1 mr-1 flex-shrink-0" />
                   <p>{property.address}, {property.city}, {property.state} {property.zipCode}</p>

@@ -83,7 +83,7 @@ export const Hero = () => {
               transition={{ delay: 0.4 }}
               className="flex gap-6 pt-4 font-montserrat"
             >
-              <Link href="/learn-more">
+              <Link href="/properties">
                 <motion.button
                   variants={buttonVariants}
                   initial="initial"
@@ -91,7 +91,7 @@ export const Hero = () => {
                   whileTap="tap"
                   className="backdrop-blur-sm text-white px-8 py-4 rounded-lg"
                 >
-                  Properties 🏠
+                  Add your Property
                 </motion.button>
               </Link>
               

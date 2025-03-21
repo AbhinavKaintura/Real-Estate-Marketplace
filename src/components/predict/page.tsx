@@ -30,15 +30,9 @@ const Predict = () => {
         setError(null);
 
         try {
-            // Create feature object with feature names as keys
-            //   const featureObject = features.reduce((obj, feature, index) => {
-            //     obj[feature] = inputValues[index];
-            //     return obj;
-            //   }, {} as Record<string, number | null>);
-
-            // Create feature object with feature names as keys
+            
             const featureObject = {
-                Area: Number(area), // this is float
+                Area: Number(area), 
                 Bedrooms: Number(bedrooms),
                 Bathrooms: Number(bathrooms),
                 Floors: Number(floors),
@@ -48,37 +42,26 @@ const Predict = () => {
                 Garage: Number(garage),
             };
 
-            // const featureObject = {
-            //     "Area": 2000,
-            //     "Bedrooms": 3,
-            //     "Bathrooms": 2,
-            //     "Floors": 2,
-            //     "YearBuilt": 1995,
-            //     "Location": "Suburbs",
-            //     "Condition": "Good",
-            //     "Garage": 1
-            // };
 
-            console.log("Sending features:", featureObject); // Debug log
+            console.log("Sending features:", featureObject); 
 
             const response = await fetch("http://127.0.0.1:8000/predict/", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify(featureObject)  // Pass the featureObject directly
+                body: JSON.stringify(featureObject)  
             });
 
-            console.log("Response:", response); // Debug log
+            console.log("Response:", response);
 
-            // Check if response is OK first
             if (!response.ok) {
                 const errorText = await response.text();
                 throw new Error(`Server error (${response.status}): ${errorText}`);
             }
 
             const data = await response.json();
-            console.log("Data:", data); // Debug log
+            console.log("Data:", data); 
             setPrediction(data.predicted_price);
 
         } catch (err) {
@@ -261,7 +244,7 @@ const Predict = () => {
                     <div className="mx-8 mb-8 p-8 border border-gray-200 bg-gray-50 text-center">
                         <h2 className="font-semibold text-xl text-gray-700 mb-2">ESTIMATED PROPERTY VALUE</h2>
                         <p className="text-4xl font-bold text-gray-800">
-                            ${typeof prediction === 'number' ? prediction.toLocaleString() : prediction}
+                        ₹{typeof prediction === 'number' ? prediction.toLocaleString() : prediction}
                         </p>
                     </div>
                 )}
