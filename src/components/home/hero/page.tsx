@@ -83,7 +83,7 @@ export const Hero = () => {
               transition={{ delay: 0.4 }}
               className="flex gap-6 pt-4 font-montserrat"
             >
-              <Link href="/properties">
+              <Link href="/adharVerify-form">
                 <motion.button
                   variants={buttonVariants}
                   initial="initial"

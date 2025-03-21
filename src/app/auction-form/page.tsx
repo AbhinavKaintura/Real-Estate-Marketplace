@@ -8,6 +8,7 @@ import Image from 'next/image';
 import { FiUpload, FiDollarSign, FiHome, FiMapPin, FiBox, FiDroplet, FiMaximize, FiFileText, FiCheck } from 'react-icons/fi';
 
 interface FormData {
+  propertyId: string;
   title: string;
   status: string;
   price: string;
@@ -22,6 +23,7 @@ interface FormData {
 }
 
 const initialFormData: FormData = {
+  propertyId: '',
   title: '',
   status: 'PENDING',
   price: '',
@@ -57,13 +59,11 @@ export default function AddProperty() {
     if (e.target.files && e.target.files[0]) {
       const selectedFile = e.target.files[0];
       
-      // Validate file type
       if (!selectedFile.type.includes('image/')) {
         setError('Please select an image file');
         return;
       }
       
-      // Validate file size (max 5MB)
       if (selectedFile.size > 5 * 1024 * 1024) {
         setError('Image size should be less than 5MB');
         return;
@@ -94,6 +94,11 @@ export default function AddProperty() {
     
     if (!formData.price.trim() || isNaN(Number(formData.price))) {
       setError('Please enter a valid price');
+      return false;
+    }
+    
+    if (!formData.propertyId.trim()) {
+      setError('Property ID is required');
       return false;
     }
     
@@ -135,17 +140,13 @@ export default function AddProperty() {
     setError('');
     
     try {
-      // Generate a safe filename
       const timestamp = Date.now();
       const fileName = `${timestamp}-${image!.name.replace(/[^a-zA-Z0-9.]/g, '_')}`;
       
-      // Upload image to Firebase Storage
       const storageRef = ref(storage, `properties/${fileName}`);
       
-      // Create upload task
       const uploadTask = uploadBytesResumable(storageRef, image!);
       
-      // Monitor upload progress and handle completion
       uploadTask.on(
         'state_changed',
         (snapshot) => {
@@ -157,7 +158,6 @@ export default function AddProperty() {
         (error) => {
           console.error('Error uploading image:', error);
           
-          // Show more specific error messages based on the error code
           if (error.code === 'storage/unauthorized') {
             setError('CORS error: Not authorized to access Firebase Storage. Please check your Firebase Storage rules and CORS configuration.');
           } else if (error.code === 'storage/canceled') {
@@ -170,11 +170,10 @@ export default function AddProperty() {
         },
         async () => {
           try {
-            // Get download URL
             const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
             
-            // Add property data to Firestore
             await addDoc(collection(db, 'properties'), {
+              propertyId: formData.propertyId,
               title: formData.title,
               status: formData.status,
               price: Number(formData.price),
@@ -217,15 +216,12 @@ export default function AddProperty() {
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-md overflow-hidden">
-        {/* Header */}
         <div className="bg-gradient-to-r from-blue-600 to-blue-800 py-6 px-8">
           <h1 className="text-2xl font-bold text-white">Add New Property</h1>
           <p className="text-blue-100 mt-1">Fill in the details to list your property</p>
         </div>
         
-        {/* Form */}
         <form onSubmit={handleSubmit} className="p-8">
-          {/* Success message */}
           {success && (
             <div className="mb-6 bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded flex items-center">
               <FiCheck className="mr-2" />
@@ -233,14 +229,12 @@ export default function AddProperty() {
             </div>
           )}
           
-          {/* Error message */}
           {error && (
             <div className="mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
               {error}
             </div>
           )}
           
-          {/* Image upload section */}
           <div className="mb-8">
             <label className="block text-gray-700 text-sm font-semibold mb-2">
               Property Image <span className="text-red-500">*</span>
@@ -283,10 +277,7 @@ export default function AddProperty() {
             </div>
           </div>
           
-          {/* Form content continues as before... */}
-          {/* All the form fields remain the same */}
           <div className="space-y-6">
-            {/* Basic property info */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label htmlFor="title" className="block text-gray-700 text-sm font-semibold mb-2">
@@ -329,7 +320,6 @@ export default function AddProperty() {
               </div>
             </div>
             
-            {/* Price */}
             <div>
               <label htmlFor="price" className="block text-gray-700 text-sm font-semibold mb-2">
                 Price <span className="text-red-500">*</span>
@@ -351,7 +341,22 @@ export default function AddProperty() {
               </div>
             </div>
             
-            {/* Address */}
+            <div>
+              <label htmlFor="propertyId" className="block text-gray-700 text-sm font-semibold mb-2">
+                Property ID <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                id="propertyId"
+                name="propertyId"
+                value={formData.propertyId}
+                onChange={handleInputChange}
+                className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full rounded-md border-gray-300 py-3"
+                placeholder="e.g., H10"
+                required
+              />  
+            </div>
+            
             <div className="space-y-4">
               <h3 className="text-lg font-medium text-gray-800 border-b pb-2">Location Details</h3>
               
@@ -427,7 +432,6 @@ export default function AddProperty() {
               </div>
             </div>
             
-            {/* Property details */}
             <div className="space-y-4">
               <h3 className="text-lg font-medium text-gray-800 border-b pb-2">Property Details</h3>
               
@@ -501,7 +505,6 @@ export default function AddProperty() {
               </div>
             </div>
             
-            {/* Description */}
             <div>
               <label htmlFor="description" className="block text-gray-700 text-sm font-semibold mb-2">
                 Property Description <span className="text-red-500">*</span>
@@ -526,7 +529,6 @@ export default function AddProperty() {
               </p>
             </div>
             
-            {/* Submit button */}
             <div className="pt-4">
               <button
                 type="submit"
