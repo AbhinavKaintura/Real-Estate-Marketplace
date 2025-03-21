@@ -27,7 +27,7 @@ const Navbar = () => {
     { title: 'Price Prediction', path: '/price-prediction' },
     { title: 'Live Auction', path: '/live-auction' },
     { title: 'Rental Property', path: '/rental-property' },
-    { title: 'Lease Property Maintenance', path: '/media' }
+    { title: 'Lease Property Maintenance', path: '/lease-property-maintenance' }
 
   ];
 

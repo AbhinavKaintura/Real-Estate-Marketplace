@@ -2,10 +2,10 @@
 import { m as motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import designImage from '../../../../public/design-image.jpg';
-import marketingImage from '../../../../public/marketing-image.jpg'; 
-import developmentImage from '../../../../public/development-image.jpg'; 
-import mediaContentImage from '../../../../public/media-content-image.jpg'; 
+import predImg from '../../../../public/price-pred.jpg';
+import auctionImg from '../../../../public/live-auction.jpg'; 
+import rentalImage from '../../../../public/rental-property.jpg'; 
+import maintainImg from '../../../../public/lease-maintenance.jpg'; 
 import { ArrowRight } from 'lucide-react';
 import message from "@/../public/message.png"; 
 
@@ -53,7 +53,7 @@ const Services = () => {
     {
       title: 'Design & Branding',
       description: 'Crafting visually compelling and memorable brand identities. From logos to complete brand guidelines, we ensure a cohesive and impactful presence across all platforms.',
-      image: designImage,
+      image: predImg,
       imageAlt: 'Design & Branding',
       imageSize: '3/4',
       link: '/design'
@@ -61,7 +61,7 @@ const Services = () => {
     {
       title: 'Digital Marketing',
       description: 'Strategic campaigns that drive engagement and growth. We leverage SEO, social media, and performance marketing to enhance brand visibility and connect with your audience effectively.',
-      image: marketingImage,
+      image: auctionImg,
       imageAlt: 'Digital Marketing',
       imageSize: '4/3',
       link: '/marketing'
@@ -69,7 +69,7 @@ const Services = () => {
     {
       title: 'Web & App Development',
       description: 'Building seamless digital experiences with innovative design and functionality. Our team creates responsive websites and intuitive mobile apps that prioritize user experience and performance.',
-      image: developmentImage,
+      image: rentalImage,
       imageAlt: 'Web & App Development',
       imageSize: '3/4',
       link: '/development'
@@ -77,7 +77,7 @@ const Services = () => {
     {
       title: 'Media & Content Creation',
       description: 'Bringing stories to life through engaging visuals and impactful narratives. We specialize in photography, videography, and content strategy to elevate your brands message.',
-      image: mediaContentImage,
+      image: maintainImg,
       imageAlt: 'Media & Content Creation',
       imageSize: '4/3',
       link: '/media'
