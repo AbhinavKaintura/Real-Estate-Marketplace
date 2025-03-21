@@ -1,24 +1,21 @@
 import { NextResponse } from 'next/server';
 import { createTransport } from 'nodemailer';
 
-// Add detailed logging for email configuration
 console.log('Email configuration:', {
     user: process.env.EMAIL_USER ? 'Set' : 'Not set',
     pass: process.env.EMAIL_APP_PASSWORD ? 'Set' : 'Not set'
 });
 
-// Create transporter with more detailed options
 const transporter = createTransport({
     service: 'gmail',
     auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_APP_PASSWORD
     },
-    debug: true, // Enable debug logging
-    logger: true  // Enable built-in logger
+    debug: true,
+    logger: true
 });
 
-// Verify transporter configuration
 transporter.verify(function (error: any, success: any) {
     if (error) {
         console.error('Transporter verification error:', error);
@@ -29,91 +26,121 @@ transporter.verify(function (error: any, success: any) {
 
 export async function POST(request: Request) {
     try {
-        // Log the incoming request
-        console.log('Received email request');
+        // console.log('Received email request');
 
         const body = await request.json();
-        console.log('Request body:', JSON.stringify(body, null, 2));
+        // console.log('Request body:', JSON.stringify(body, null, 2));
 
         const {
             houseId,
+            tenantName,
             issueCategory,
             issue,
             urgency,
             preferredDate,
             preferredTime,
             entryPermission,
-            tenant_email,  // Tenant's email
-            owner_email    // Owner's email
+            owner_email,   // Owner's email
+            // tenant_email,   // Tenant's email
+            // idToken
         } = body;
 
         const emailContent = `
-            <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333333; max-width: 600px; margin: 0 auto; padding: 20px;">
-                <div style="background-color: #f7f7f7; padding: 20px; border-radius: 5px; border-left: 4px solid #4a6fa5;">
-                    <h1 style="color: #4a6fa5; margin-top: 0;">New Maintenance Request</h1>
-                    <p style="margin-bottom: 20px;">A new maintenance request has been submitted for your property. Please review the details below:</p>
-                    
-                    <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
-                        <tr>
-                            <td style="padding: 8px; border-bottom: 1px solid #dddddd; font-weight: bold; width: 40%;">Property ID:</td>
-                            <td style="padding: 8px; border-bottom: 1px solid #dddddd;">${houseId}</td>
-                        </tr>
-                        <tr>
-                            <td style="padding: 8px; border-bottom: 1px solid #dddddd; font-weight: bold; background-color: #f2f2f2;">Issue Category:</td>
-                            <td style="padding: 8px; border-bottom: 1px solid #dddddd; background-color: #f2f2f2;">${issueCategory}</td>
-                        </tr>
-                        <tr>
-                            <td style="padding: 8px; border-bottom: 1px solid #dddddd; font-weight: bold;">Description:</td>
-                            <td style="padding: 8px; border-bottom: 1px solid #dddddd;">${issue}</td>
-                        </tr>
-                        <tr>
-                            <td style="padding: 8px; border-bottom: 1px solid #dddddd; font-weight: bold; background-color: #f2f2f2;">Urgency:</td>
-                            <td style="padding: 8px; border-bottom: 1px solid #dddddd; background-color: #f2f2f2;">
-                                <span style="color: ${urgency === 'High' ? '#e53935' : urgency === 'Medium' ? '#ff9800' : '#4caf50'}; font-weight: bold;">${urgency}</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="padding: 8px; border-bottom: 1px solid #dddddd; font-weight: bold;">Preferred Date:</td>
-                            <td style="padding: 8px; border-bottom: 1px solid #dddddd;">${preferredDate}</td>
-                        </tr>
-                        <tr>
-                            <td style="padding: 8px; border-bottom: 1px solid #dddddd; font-weight: bold; background-color: #f2f2f2;">Preferred Time:</td>
-                            <td style="padding: 8px; border-bottom: 1px solid #dddddd; background-color: #f2f2f2;">${preferredTime}</td>
-                        </tr>
-                        <tr>
-                            <td style="padding: 8px; border-bottom: 1px solid #dddddd; font-weight: bold;">Entry Permission:</td>
-                            <td style="padding: 8px; border-bottom: 1px solid #dddddd;">${entryPermission === true ? 'Granted' : 'Not Granted'}</td>
-                        </tr>
-                    </table>
-                    
-                    <div style="background-color: #e8f0fe; padding: 15px; border-radius: 4px; margin-bottom: 20px;">
-                        <p style="margin: 0; font-weight: bold;">Next Steps:</p>
-                        <ol style="margin-top: 10px; margin-bottom: 0; padding-left: 20px;">
-                            <li>Review the request details</li>
-                            <li>Schedule a service appointment</li>
-                            <li>Contact the tenant to confirm the appointment</li>
-                        </ol>
-                    </div>
-                    
-                    <div style="text-align: center; margin-top: 30px;">
-                        <a href="#" style="background-color: #4a6fa5; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; font-weight: bold;">Respond to Request</a>
-                    </div>
-                    
-                    <p style="margin-top: 30px; font-size: 12px; color: #777777; text-align: center;">
-                        This is an automated message. Please do not reply directly to this email.
-                    </p>
-                </div>
+    <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #333; background-color: #f9f9f9; padding: 15px; margin: 0; line-height: 1.6;">
+ <div style="max-width: 100%; background-color: white; margin: 0 auto; border: 1px solid #e0e0e0; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
+    <!-- Header -->
+    <div style="padding: 30px; background-color: #2c3e50; color: white; text-align: left; display: flex; align-items: center; justify-content: space-between;">
+        <div>
+            <h1 style="margin: 0 0 5px 0; font-size: 28px; font-weight: 600;">New Maintenance Request</h1>
+            <p style="margin: 0; font-size: 16px; opacity: 0.9;">This request has been submitted by your tenant <strong>${tenantName}</strong></p>
+        </div>
+        <div style="margin-left: auto;">
+            <img src="https://i.postimg.cc/YhyDpfF7/logo3.jpg" alt="Company Logo" style="height: 10rem; max-width: 100%;">
+        </div>
+    </div>
+</div>
+    
+    <!-- Main Content -->
+    <div style="padding: 30px;">
+      <!-- Two Column Layout for Larger Screens -->
+      <div style="display: flex; flex-wrap: wrap; margin: 0 -15px;">
+        <!-- Left Column -->
+        <div style="flex: 1; min-width: 280px; padding: 0 15px; box-sizing: border-box;">
+          <!-- Tenant Info -->
+          <div style="margin-bottom: 25px;">
+            <label style="display: block; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: #777; margin-bottom: 8px;">Tenant Name</label>
+            <div style="font-size: 16px; padding: 12px; background-color: #f5f5f5; border-left: 3px solid #2c3e50;">${tenantName}</div>
+          </div>
+          
+          <!-- Property ID -->
+          <div style="margin-bottom: 25px;">
+            <label style="display: block; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: #777; margin-bottom: 8px;">Property ID</label>
+            <div style="font-size: 16px; padding: 12px; background-color: #f5f5f5; border-left: 3px solid #2c3e50;">${houseId}</div>
+          </div>
+          
+          <!-- Issue Category -->
+          <div style="margin-bottom: 25px;">
+            <label style="display: block; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: #777; margin-bottom: 8px;">Issue Category</label>
+            <div style="font-size: 16px; padding: 12px; background-color: #f5f5f5; border-left: 3px solid #2c3e50;">${issueCategory}</div>
+          </div>
+        </div>
+        
+        <!-- Right Column -->
+        <div style="flex: 1; min-width: 280px; padding: 0 15px; box-sizing: border-box;">
+          <!-- Urgency -->
+          <div style="margin-bottom: 25px;">
+            <label style="display: block; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: #777; margin-bottom: 8px;">Urgency</label>
+            <div style="font-size: 16px; padding: 12px; color: white; background-color: #c0392b; display: inline-block; border-radius: 4px;">${urgency}</div>
+          </div>
+          
+          <!-- Preferred Date/Time -->
+          <div style="margin-bottom: 25px;">
+            <label style="display: block; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: #777; margin-bottom: 8px;">Preferred Schedule</label>
+            <div style="font-size: 16px; padding: 12px; background-color: #f5f5f5; border-left: 3px solid #2c3e50;">${preferredDate} at ${preferredTime}</div>
+          </div>
+          
+          <!-- Entry Permission -->
+          <div style="margin-bottom: 25px;">
+            <label style="display: block; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: #777; margin-bottom: 8px;">Entry Permission</label>
+            <div style="font-size: 16px; padding: 12px; background-color: ${entryPermission === true ? '#ebf7f2' : '#fdecea'}; color: ${entryPermission === true ? '#27ae60' : '#c0392b'}; display: inline-block; border-radius: 4px;">
+              ${entryPermission === true ? 'Access Granted' : 'Access Not Granted'}
             </div>
-        `;
+          </div>
+        </div>
+      </div>
+      
+      <!-- Description (Full Width) -->
+      <div style="margin-top: 15px;">
+        <label style="display: block; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: #777; margin-bottom: 8px;">Description</label>
+        <div style="font-size: 16px; padding: 20px; background-color: #f5f5f5; border-left: 3px solid #2c3e50; white-space: pre-wrap; line-height: 1.6; min-height: 120px;">${issue}</div>
+      </div>
+    </div>
+    
+    <!-- Footer -->
+    <div style="padding: 20px 30px; background-color: #f5f5f5; border-top: 1px solid #e0e0e0; font-size: 14px; color: #666;">
+      This email is sent on behalf of your tenant ${tenantName}. You can reply directly to this email to contact the tenant.
+    </div>
+  </div>
+</body>
+`;
 
         // Log email attempt
-        console.log('Attempting to send email from tenant:', tenant_email, 'to owner:', owner_email);
+        // console.log('Attempting to send email to:', owner_email);
+
+        await transporter.sendMail({
+            from: `"${tenantName} via Property Manager" <${process.env.EMAIL_USER}>`, // Shows tenant as sender
+            to: owner_email,
+            subject: 'New Maintenance Request for Your Property',
+            html: emailContent
+        });
+
+
 
         try {
             await transporter.sendMail({
-                from: tenant_email, // Email will be sent from tenant's email
-                to: owner_email,    // Email will be sent to the owner's email
-                subject: 'New Maintenance Request for Your Property',
+                from: process.env.EMAIL_USER,
+                to: owner_email,
+                subject: 'New Maintenance Request Received',
                 html: emailContent
             });
             console.log('Email sent successfully');
@@ -124,8 +151,7 @@ export async function POST(request: Request) {
 
         return NextResponse.json({ message: 'Email sent successfully' });
     } catch (error) {
-        // Log the full error
-        console.error('Full error details:', error);
+        // console.error('Full error details:', error);
 
         return NextResponse.json(
             {

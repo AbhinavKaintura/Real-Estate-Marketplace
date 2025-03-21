@@ -26,7 +26,9 @@ const Navbar = () => {
     { title: 'Home', path: '/' },
 
     { title: 'Price Prediction', path: '/predict' },
+
     { title: 'Live Auction', path: '/properties' },
+
 
     { title: 'Rental Property', path: '/rental-property' },
     { title: 'Lease Property Maintenance', path: '/lease-property-maintenance' }
