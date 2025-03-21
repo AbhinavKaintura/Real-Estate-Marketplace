@@ -9,6 +9,7 @@ interface MaintenanceRequestFormProps {
 
 const MaintenanceRequestForm: React.FC<MaintenanceRequestFormProps> = ({ tenantId }) => {
     const [houseId, setHouseId] = useState('');
+    const [tenantName, setTenantName] = useState('');
     const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
     const [otherCategory, setOtherCategory] = useState('');
     const [issue, setIssue] = useState('');
@@ -42,14 +43,14 @@ const MaintenanceRequestForm: React.FC<MaintenanceRequestFormProps> = ({ tenantI
 
     const sendOrderEmail = async (issueDetails: any) => {
         try {
-            console.log('Sending email data:', issueDetails);
+            // console.log('Sending email data:', issueDetails);
             const response = await fetch('/api/send-mtnc-to-owner', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(issueDetails),
-                cache: 'no-store' // Prevents caching of the request
+                cache: 'no-store'
             });
 
             if (!response.ok) {
@@ -57,10 +58,10 @@ const MaintenanceRequestForm: React.FC<MaintenanceRequestFormProps> = ({ tenantI
             }
 
             // Log the response status
-            console.log('Email API response status:', response.status);
+            // console.log('Email API response status:', response.status);
 
             const data = await response.json();
-            console.log('Email sent successfully:', data);
+            // console.log('Email sent successfully:', data);
             return true;
         } catch (error) {
             console.error('Error sending email:', error);
@@ -130,16 +131,18 @@ const MaintenanceRequestForm: React.FC<MaintenanceRequestFormProps> = ({ tenantI
                 createdAt: new Date(),
             });
 
+            // console.log("Maintenance request submitted successfully hahaha!");
+
             // Send email to property owner
             await sendOrderEmail({
                 houseId,
+                tenantName, // Tenant's name
                 issueCategory: categories.join(', '),
                 issue,
                 urgency,
                 preferredDate,
                 preferredTime,
                 entryPermission,
-                tenant_email: 'divyanshuempire789@gmail.com',  // Tenant's email
                 owner_email: 'abhinavkaintura001@gmail.com'    // Owner's email 
             }
             );
@@ -186,6 +189,18 @@ const MaintenanceRequestForm: React.FC<MaintenanceRequestFormProps> = ({ tenantI
                                 value={houseId}
                                 onChange={(e) => setHouseId(e.target.value)}
                                 placeholder="Enter your Property ID"
+                                className="w-full p-3 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                                required
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="name" className="block text-gray-700 font-medium mb-2">Your Name*</label>
+                            <input
+                                id="name"
+                                type="text"
+                                value={tenantName}
+                                onChange={(e) => setTenantName(e.target.value)}
+                                placeholder="Enter your Name"
                                 className="w-full p-3 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
                                 required
                             />
