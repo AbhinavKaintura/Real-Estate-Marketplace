@@ -1,3 +1,6 @@
+//auction-form.tsx 
+
+
 'use client';
 import { useState, useRef, ChangeEvent, FormEvent } from 'react';
 import { collection, addDoc } from 'firebase/firestore';
