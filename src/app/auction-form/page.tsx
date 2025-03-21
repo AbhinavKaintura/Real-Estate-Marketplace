@@ -3,7 +3,7 @@ import { useState, useRef, ChangeEvent, FormEvent } from 'react';
 import { collection, addDoc } from 'firebase/firestore';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import { db, storage } from '@/firebase/firebase';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation'; 
 import Image from 'next/image';
 import { FiUpload, FiDollarSign, FiHome, FiMapPin, FiBox, FiDroplet, FiMaximize, FiFileText, FiCheck } from 'react-icons/fi';
 
@@ -180,9 +180,8 @@ export default function AddProperty() {
           setImagePreview(null);
           setUploadProgress(0);
           
-          // Redirect to properties page after 2 seconds
           setTimeout(() => {
-            router.push('/properties');
+            router.push('/live-auctions'); 
           }, 2000);
         }
       );
@@ -196,15 +195,12 @@ export default function AddProperty() {
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-md overflow-hidden">
-        {/* Header */}
         <div className="bg-gradient-to-r from-blue-600 to-blue-800 py-6 px-8">
           <h1 className="text-2xl font-bold text-white">Add New Property</h1>
           <p className="text-blue-100 mt-1">Fill in the details to list your property</p>
         </div>
         
-        {/* Form */}
         <form onSubmit={handleSubmit} className="p-8">
-          {/* Success message */}
           {success && (
             <div className="mb-6 bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded flex items-center">
               <FiCheck className="mr-2" />
@@ -212,14 +208,12 @@ export default function AddProperty() {
             </div>
           )}
           
-          {/* Error message */}
           {error && (
             <div className="mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
               {error}
             </div>
           )}
           
-          {/* Image upload section */}
           <div className="mb-8">
             <label className="block text-gray-700 text-sm font-semibold mb-2">
               Property Image <span className="text-red-500">*</span>
@@ -263,7 +257,6 @@ export default function AddProperty() {
           </div>
           
           <div className="space-y-6">
-            {/* Basic property info */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label htmlFor="title" className="block text-gray-700 text-sm font-semibold mb-2">
@@ -306,7 +299,6 @@ export default function AddProperty() {
               </div>
             </div>
             
-            {/* Price */}
             <div>
               <label htmlFor="price" className="block text-gray-700 text-sm font-semibold mb-2">
                 Price <span className="text-red-500">*</span>
@@ -328,7 +320,6 @@ export default function AddProperty() {
               </div>
             </div>
             
-            {/* Address */}
             <div className="space-y-4">
               <h3 className="text-lg font-medium text-gray-800 border-b pb-2">Location Details</h3>
               
