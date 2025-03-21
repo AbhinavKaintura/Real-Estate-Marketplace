@@ -3,6 +3,9 @@ import Link from 'next/link';
 import Navbar from '@/components/nav-bar/page';
 import { m as motion, LazyMotion, domAnimation } from 'framer-motion';
 import Head from 'next/head';
+import {Hero} from '@/components/home/hero/page';
+import Services from '@/components/home/services/page';
+import Footer from '@/components/footer/page';
 
 
 export default function Home() {
@@ -16,9 +19,10 @@ export default function Home() {
         </Head>
       <main>
         <Navbar/>
+        <Hero/>
+        {/* <Services/> */}
+        <Footer/>
       </main>
-      <Link href="/price-prediction">Predict Price</Link>
-
     </div>
     </LazyMotion>
     

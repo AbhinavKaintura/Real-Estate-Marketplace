@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { Menu, X } from 'lucide-react';
 import Image from 'next/image';
 import { m as motion, AnimatePresence } from 'framer-motion';
-import Logo from '../../../public/logo1.png';
+import Logo from '../../../public/logo3.png';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -25,9 +25,10 @@ const Navbar = () => {
   const menuItems = [
     { title: 'Home', path: '/' },
     { title: 'Price Prediction', path: '/price-prediction' },
-    { title: 'Marketing', path: '/marketing' },
-    { title: 'Development', path: '/development' },
-    { title: 'Media', path: '/media' }
+    { title: 'Live Auction', path: '/live-auction' },
+    { title: 'Rental Property', path: '/rental-property' },
+    { title: 'Lease Property Maintenance', path: '/media' }
+
   ];
 
   return (

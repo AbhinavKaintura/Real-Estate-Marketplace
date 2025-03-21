@@ -3,7 +3,6 @@ import { m as motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link'; 
 import backgroundImage from '../../../../public/hero-img.jpg';
-import heroImage from '../../../../public/card.png';
 
 export const Hero = () => {
   const textHoverVariants = {
@@ -48,10 +47,10 @@ export const Hero = () => {
                 variants={textHoverVariants}
                 className="text-white/80 text-lg tracking-wide cursor-pointer font-montserrat"
               >
-                At Endurance EStates, we believe in transforming ideas into impactful realities.
+                At Endurance EStates, we bring you the future of real estate.
               </motion.p>
               <div className="space-y-2">
-                {['ENVISION', 'EXECUTE', 'EXCEL'].map((text, index) => (
+                {['INSPIRING', 'INNOVATE', 'PRESTIGE'].map((text, index) => (
                   <motion.h1
                     key={text}
                     initial={{ opacity: 0, y: 20 }}
@@ -75,7 +74,7 @@ export const Hero = () => {
               variants={textHoverVariants}
               className="text-white/80 text-xl font-light cursor-pointer font-montserrat"
             >
-              At Endurance EStates, we don't just build brands; we create legacies.
+              Excited to see your future home? Let's get started.
             </motion.p>
             
             <motion.div
@@ -92,7 +91,7 @@ export const Hero = () => {
                   whileTap="tap"
                   className="backdrop-blur-sm text-white px-8 py-4 rounded-lg"
                 >
-                  Learn More
+                  Properties 🏠
                 </motion.button>
               </Link>
               
