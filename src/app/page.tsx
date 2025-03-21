@@ -20,6 +20,7 @@ export default function Home() {
       <main>
         <Navbar/>
         <Hero/>
+        <Link href="/auction-form">Form</Link>
         <Services/>
         <Footer/>
       </main>

@@ -52,10 +52,10 @@ const Footer = () => {
     {
       title: 'Services',
       links: [
-        { name: 'Design', href: '/design' },
-        { name: 'Development', href: '/development' },
-        { name: 'Marketing', href: '/marketing' },
-        { name: 'Media', href: '/media' },
+        { name: 'Price Prediction', href: '/price-prediction' },
+        { name: 'Live Auction', href: '/live-auction' },
+        { name: 'Rental Property', href: '/rental-property' },
+        { name: 'Lease property maintenance', href: '/lease-property-maintenance' },
       ],
     },
     {

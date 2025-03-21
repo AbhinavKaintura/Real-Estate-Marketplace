@@ -51,36 +51,36 @@ const Services = () => {
 
   const services = [
     {
-      title: 'Design & Branding',
-      description: 'Crafting visually compelling and memorable brand identities. From logos to complete brand guidelines, we ensure a cohesive and impactful presence across all platforms.',
+      title: 'Price Prediction',
+      description: 'Accurately predict real estate prices using advanced data analytics and AI-driven models. Stay ahead with insights on market trends, location, and economic factors.',
       image: predImg,
-      imageAlt: 'Design & Branding',
+      imageAlt: 'Price Prediction',
       imageSize: '3/4',
-      link: '/design'
+      link: '/price-prediction'
     },
     {
-      title: 'Digital Marketing',
-      description: 'Strategic campaigns that drive engagement and growth. We leverage SEO, social media, and performance marketing to enhance brand visibility and connect with your audience effectively.',
+      title: 'Live Auction',
+      description: 'Join live real estate auctions for competitive bidding and instant property deals. Experience a fast, transparent, and secure way to buy and sell properties in real time.',
       image: auctionImg,
-      imageAlt: 'Digital Marketing',
+      imageAlt: 'Live Auction',
       imageSize: '4/3',
-      link: '/marketing'
+      link: '/live-auction'
     },
     {
-      title: 'Web & App Development',
-      description: 'Building seamless digital experiences with innovative design and functionality. Our team creates responsive websites and intuitive mobile apps that prioritize user experience and performance.',
+      title: 'Rental Property',
+      description: 'Find the perfect rental property with ease—whether it’s a home, apartment, or commercial space. Explore verified listings and secure your ideal rental hassle-free.',
       image: rentalImage,
-      imageAlt: 'Web & App Development',
+      imageAlt: 'Rental Property',
       imageSize: '3/4',
-      link: '/development'
+      link: '/rental-property'
     },
     {
-      title: 'Media & Content Creation',
-      description: 'Bringing stories to life through engaging visuals and impactful narratives. We specialize in photography, videography, and content strategy to elevate your brands message.',
+      title: 'Lease property maintenance',
+      description: 'Ensure your leased property stays in top condition with our professional maintenance services. From repairs to regular upkeep, we handle it all efficiently and hassle-free.',
       image: maintainImg,
-      imageAlt: 'Media & Content Creation',
+      imageAlt: 'Lease property maintenance ',
       imageSize: '4/3',
-      link: '/media'
+      link: '/lease-property-maintenance'
     }
   ];
 
@@ -168,15 +168,7 @@ const Services = () => {
         ))}
         
       </motion.div>
-      {/* <div className="w-full">
-      <Image
-        src={message}
-        alt="message"
-        className="w-full h-auto object-cover my-16"
-        width={1920} 
-        height={1080} 
-      />
-      </div> */}
+
     </section>
   );
 };
