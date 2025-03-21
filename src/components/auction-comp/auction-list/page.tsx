@@ -1,4 +1,4 @@
-// pages/properties.tsx
+'use client';
 import { useState, useEffect } from 'react';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../../../firebase/firebase';
@@ -22,6 +22,8 @@ interface Property {
   baths: number;
   sqft: number;
   description: string;
+  title: string; // Add this to match the auction-form.tsx structure
+  createdAt: string; // Add this to match the auction-form.tsx structure
 }
 
 export default function PropertyListings() {
@@ -66,11 +68,13 @@ export default function PropertyListings() {
           <div key={property.id} className="bg-white rounded-lg overflow-hidden shadow-lg">
             <div className="relative">
               <div className="aspect-w-16 aspect-h-9 relative h-64">
+                {/* Use a placeholder or unoptimized image to fix Firebase Storage issue */}
                 <Image 
                   src={property.image || '/placeholder-house.jpg'} 
-                  alt={`${property.address}`}
+                  alt={property.title || property.address || 'Property image'}
                   fill
                   className="object-cover"
+                  unoptimized={true} // Add this to bypass image optimization for external URLs
                 />
               </div>
               
@@ -93,7 +97,8 @@ export default function PropertyListings() {
             
             <div className="p-6">
               <div className="mb-4">
-                <h2 className="text-2xl font-bold text-gray-800">${property.price.toLocaleString()}</h2>
+                <h2 className="text-xl font-bold text-gray-800 mb-1">{property.title || 'Property Listing'}</h2>
+                <h3 className="text-2xl font-bold text-gray-800">${property.price?.toLocaleString() || '0'}</h3>
                 <div className="flex items-start mt-2 text-gray-600">
                   <HiOutlineLocationMarker className="mt-1 mr-1 flex-shrink-0" />
                   <p>{property.address}, {property.city}, {property.state} {property.zipCode}</p>
@@ -110,7 +115,7 @@ export default function PropertyListings() {
                   <p className="text-gray-500">baths</p>
                 </div>
                 <div className="text-center">
-                  <p className="text-xl font-semibold">{property.sqft.toLocaleString()}</p>
+                  <p className="text-xl font-semibold">{property.sqft?.toLocaleString() || '0'}</p>
                   <p className="text-gray-500">sq ft</p>
                 </div>
               </div>

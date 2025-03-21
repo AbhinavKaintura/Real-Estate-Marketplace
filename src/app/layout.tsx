@@ -33,7 +33,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Endurance Estates: Envision. Execute. Excel",
+  title: "Endurance Estates",
   description: "App by ERYX Media",
 };
 
