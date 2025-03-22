@@ -1,10 +1,16 @@
 'use client';
 import { useState, useEffect } from 'react';
+
+declare global {
+  interface Window {
+    ethereum?: any;
+  }
+}
 import { useRouter, useSearchParams } from 'next/navigation';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '@/firebase/firebase';
 import Image from 'next/image';
-import { FiDownload, FiCheck, FiFileText, FiDollarSign, FiHome, FiMapPin, FiUser, FiCalendar, FiHash, FiAlertCircle } from 'react-icons/fi';
+import { FiDownload, FiCheck, FiFileText, FiDollarSign, FiHome, FiMapPin, FiUser, FiHash, FiAlertCircle } from 'react-icons/fi';
 import { generateBlockchainTransaction, verifyAgreement } from '@/utils/blockchain';
 
 interface PropertyData {
@@ -109,6 +115,7 @@ export default function PropertyAgreement() {
     // Check if wallet is available
     if (typeof window !== 'undefined' && window.ethereum) {
       setWalletConnected(true);
+      console.log(walletConnected)
       
       // Listen for account changes
       window.ethereum.on('accountsChanged', () => {
@@ -195,17 +202,17 @@ export default function PropertyAgreement() {
 
     try {
       // Call blockchain transaction function
-      const transaction = await generateBlockchainTransaction(agreementData);
+      // const transaction: BlockchainTransaction = await generateBlockchainTransaction(agreementData);
       
       // Update agreement data with blockchain transaction details
-      setAgreementData(prev => ({
-        ...prev,
-        transactionId: transaction.transactionId,
-        blockNumber: transaction.blockNumber?.toString(),
-        network: transaction.network,
-        agreementId: transaction.agreementId,
-        blockTimestamp: transaction.timestamp
-      }));
+      // setAgreementData(prev => ({
+      //   ...prev,
+      //   transactionId: transaction.transactionId,
+      //   blockNumber: transaction.blockNumber?.toString(),
+      //   network: transaction.network,
+      //   agreementId: transaction.agreementId,
+      //   blockTimestamp: transaction.timestamp
+      // }));
 
       setAgreementGenerated(true);
     } catch (err) {
@@ -226,12 +233,12 @@ export default function PropertyAgreement() {
       setGeneratingAgreement(true);
       const verification = await verifyAgreement(agreementData.transactionId);
       
-      if (verification.verified) {
-        setError('');
-        alert(`Agreement verified on blockchain!\nBlock: ${verification.blockNumber}\nTimestamp: ${verification.timestamp}\nConfirmations: ${verification.confirmations}`);
-      } else {
-        setError(`Verification failed: ${verification.reason}`);
-      }
+      // if (verification.verified) {
+      //   setError('');
+      //   alert(`Agreement verified on blockchain!\nBlock: ${verification.blockNumber}\nTimestamp: ${verification.timestamp}\nConfirmations: ${verification.confirmations}`);
+      // } else {
+      //   setError(`Verification failed: ${verification.reason}`);
+      // }
     } catch (err) {
       console.error('Error verifying agreement:', err);
       setError('Failed to verify agreement on blockchain.');

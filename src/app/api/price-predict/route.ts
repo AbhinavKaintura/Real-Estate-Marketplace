@@ -57,6 +57,7 @@ export async function POST(req: Request, res: Response): Promise<void> {
         return NextResponse.json({ 'prediction': 1000000 });
     }
     catch (error) {
+        console.error('Error executing prediction script:', error);
         return NextResponse.json({ error: "Failed to get response from gemini" }, { status: 500 });
     }
 }

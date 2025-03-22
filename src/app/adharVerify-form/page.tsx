@@ -3,7 +3,6 @@
 'use client';
 import { useState, FormEvent, ChangeEvent } from 'react';
 import { useRouter } from 'next/navigation';
-import Image from 'next/image';
 import { FiUser, FiPhone, FiCreditCard, FiLock, FiCheck } from 'react-icons/fi';
 import { collection, query, where, getDocs, addDoc } from 'firebase/firestore';
 import { db } from '@/firebase/firebase';
@@ -118,6 +117,7 @@ export default function AadhaarVerification() {
       console.log('Phone OTP sent: 123456');
       
     } catch (err) {
+      console.error('Error sending OTP:', err);
       setError('Failed to send OTP. Please try again.');
     } finally {
       setLoading(false);
@@ -149,6 +149,7 @@ export default function AadhaarVerification() {
       console.log('Aadhaar OTP sent: 654321');
       
     } catch (err) {
+      console.error('Error sending Aadhaar OTP:', err);
       setError('Failed to send Aadhaar verification OTP. Please try again.');
     } finally {
       setLoading(false);
@@ -181,6 +182,7 @@ export default function AadhaarVerification() {
       }
       
     } catch (err) {
+      console.error('Error verifying OTP:', err);
       setError('Failed to verify OTP. Please try again.');
     } finally {
       setLoading(false);
@@ -213,6 +215,7 @@ export default function AadhaarVerification() {
       }
       
     } catch (err) {
+      console.error('Error verifying Aadhaar OTP:', err);
       setError('Failed to verify Aadhaar OTP. Please try again.');
     } finally {
       setLoading(false);
@@ -279,6 +282,7 @@ export default function AadhaarVerification() {
       // Create or get user ID
       const userIdValue = await createOrGetUser();
       setUserId(userIdValue);
+      console.log('User ID:', userIdValue);
       
       // Show success message
       setSuccess(true);
