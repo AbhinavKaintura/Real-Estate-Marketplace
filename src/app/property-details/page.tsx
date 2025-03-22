@@ -1,8 +1,7 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { doc, getDoc, query, where, collection, getDocs, limit } from 'firebase/firestore';
-import { db } from '@/firebase/firebase'; // Adjust the import path to your Firebase config
+import { query, where, collection, getDocs, limit } from 'firebase/firestore';
+import { db } from '@/firebase/firebase'; 
 import { ArrowRight, Bed, Bath, Move, Map, Calendar } from 'lucide-react';
 
 const PropertyCard = () => {
@@ -26,16 +25,14 @@ const PropertyCard = () => {
     const [property, setProperty] = useState<Property | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [dominantColor, setDominantColor] = useState('#3b82f6'); // Default blue
+    const [dominantColor, setDominantColor] = useState('#3b82f6'); 
 
-    // Get property ID from URL
 
 
     useEffect(() => {
         const fetchProperty = async () => {
             try {
                 setLoading(true);
-                // Extract houseId from URL
                 const params = new URLSearchParams(window.location.search);
                 const id = params.get('id');
                 console.log(id);
@@ -59,10 +56,6 @@ const PropertyCard = () => {
                     throw new Error('Property not found');
                 }
 
-                // const propertyData = {
-                //     ...(propertySnap.data() as Property),
-                //     id: propertySnap.id
-                // };
                 const propertyData = propertySnap.docs[0].data();
 
                 setProperty(propertyData as Property);
@@ -81,7 +74,6 @@ const PropertyCard = () => {
         fetchProperty();
     }, []);
 
-    // Function to extract dominant color from image
     const extractDominantColor = (imageUrl: string) => {
         const img = new Image();
         img.crossOrigin = 'Anonymous';
@@ -120,7 +112,6 @@ const PropertyCard = () => {
             g = Math.floor(g / pixelCount);
             b = Math.floor(b / pixelCount);
 
-            // For better contrast with text
             const color = `rgb(${r}, ${g}, ${b})`;
             setDominantColor(color);
         };
@@ -153,10 +144,9 @@ const PropertyCard = () => {
         return null;
     }
 
-    // Format price with commas
     const formattedPrice = new Intl.NumberFormat('en-US', {
         style: 'currency',
-        currency: 'USD',
+        currency: 'INR',
         maximumFractionDigits: 0
     }).format(property.price ?? 0);
 
@@ -178,7 +168,6 @@ const PropertyCard = () => {
             const g = parseInt(rgbMatch[2]);
             const b = parseInt(rgbMatch[3]);
 
-            // Create a lighter version (mix with white)
             const lighterR = Math.min(r + 180, 255);
             const lighterG = Math.min(g + 180, 255);
             const lighterB = Math.min(b + 180, 255);

@@ -16,7 +16,7 @@ const CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_AGREEMENT_CONTRACT_ADDRESS || "
 
 /**
  * Initialize connection to Ethereum network
- * @returns {Promise<{provider: ethers.providers.Web3Provider, signer: ethers.Signer, contract: ethers.Contract}>}
+ * @returns {Promise<{provider: ethers.BrowserProvider, signer: ethers.Signer, contract: ethers.Contract}>}
  */
 export const initializeBlockchain = async () => {
   // Check if window.ethereum is available (MetaMask or other wallet)
@@ -29,10 +29,10 @@ export const initializeBlockchain = async () => {
     await window.ethereum.request({ method: 'eth_requestAccounts' });
     
     // Create ethers provider
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const provider = new ethers.BrowserProvider(window.ethereum);
     
     // Get signer (authenticated account)
-    const signer = provider.getSigner();
+    const signer = await provider.getSigner();
     
     // Create contract instance
     const contract = new ethers.Contract(CONTRACT_ADDRESS, agreementContractABI, signer);
@@ -88,7 +88,7 @@ export const generateBlockchainTransaction = async (agreementData) => {
     
     // Convert price to wei (blockchain format) - assuming price is in USD
     // In a real implementation, you would use an oracle for USD/ETH conversion
-    const priceInWei = ethers.utils.parseEther(
+    const priceInWei = ethers.parseEther(
       (parseFloat(agreementData.agreementPrice) / 2000).toString() // Simplified ETH/USD conversion
     );
     
@@ -105,20 +105,29 @@ export const generateBlockchainTransaction = async (agreementData) => {
     const receipt = await tx.wait();
     
     // Extract agreement ID from event logs
-    const event = receipt.events.find(event => event.event === 'AgreementCreated');
-    const agreementId = event.args.agreementId.toString();
+    const event = receipt.logs.find(log => {
+      try {
+        const parsedLog = contract.interface.parseLog(log);
+        return parsedLog.name === 'AgreementCreated';
+      } catch (e) {
+        return false;
+      }
+    });
+    
+    const parsedEvent = contract.interface.parseLog(event);
+    const agreementId = parsedEvent.args.agreementId.toString();
     
     // Get block timestamp
     const block = await contract.provider.getBlock(receipt.blockNumber);
     
     // Save transaction details to Firestore
-    await saveTransactionToFirestore(agreementData, receipt.transactionHash, agreementId);
+    await saveTransactionToFirestore(agreementData, receipt.hash, agreementId);
     
     // Return transaction details
     return {
-      transactionId: receipt.transactionHash,
+      transactionId: receipt.hash,
       agreementId: agreementId,
-      timestamp: new Date(block.timestamp * 1000).toISOString(),
+      timestamp: new Date(Number(block.timestamp) * 1000).toISOString(),
       status: 'confirmed',
       blockNumber: receipt.blockNumber,
       network: (await contract.provider.getNetwork()).name
@@ -239,7 +248,7 @@ export const verifyAgreement = async (transactionId) => {
     return {
       verified: true,
       blockNumber: receipt.blockNumber,
-      timestamp: new Date(block.timestamp * 1000).toISOString(),
+      timestamp: new Date(Number(block.timestamp) * 1000).toISOString(),
       confirmations: await provider.getBlockNumber() - receipt.blockNumber,
       from: transaction.from,
       to: transaction.to,

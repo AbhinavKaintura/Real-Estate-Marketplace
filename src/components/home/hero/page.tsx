@@ -91,7 +91,7 @@ export const Hero = () => {
                   whileTap="tap"
                   className="backdrop-blur-sm text-white px-8 py-4 rounded-lg"
                 >
-                  Add your Property
+                  Add Property
                 </motion.button>
               </Link>
               

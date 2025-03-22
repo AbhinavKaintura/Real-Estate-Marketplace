@@ -7,12 +7,6 @@ import Image from 'next/image';
 import { FiDownload, FiCheck, FiFileText, FiDollarSign, FiHome, FiMapPin, FiUser, FiCalendar, FiHash, FiAlertCircle } from 'react-icons/fi';
 import { generateBlockchainTransaction, verifyAgreement } from '@/utils/blockchain';
 
-declare global {
-  interface Window {
-    ethereum?: any;
-  }
-}
-
 interface PropertyData {
   propertyId: string;
   title: string;

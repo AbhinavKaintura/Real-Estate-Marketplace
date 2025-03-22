@@ -7,14 +7,12 @@ import {Hero} from '@/components/home/hero/page';
 import Services from '@/components/home/services/page';
 import Footer from '@/components/footer/page';
 
-
-
 export default function Home() {
   return (
     <LazyMotion features={domAnimation} >
     <div className="min-h-screen">
         <Head>
-          <title>Endurance States | Design Creates Culture</title>
+          <title>Endurance States</title>
           <meta name="description" content="We are a design-driven agency creating meaningful digital experiences." />
         </Head>
       <main>
