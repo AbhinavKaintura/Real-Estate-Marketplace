@@ -3,7 +3,7 @@ Getting Started
 1. Clone the Repository
 First, clone the repository to your local machine:
 
-git clone https://github.com/your-username/your-repository-name.git
+git clone https://github.com/AbhinavKaintura/Real-Estate-Marketplace.git
 cd your-repository-name
 
 3. Install Dependencies
