@@ -118,7 +118,7 @@ export default function PropertyListings() {
               
               <p className="text-gray-700 line-clamp-4">{property.description}</p>
               
-              <Link href={`/properties/${property.id}`}>
+              <Link href={`/property-details?id=${property.id}`}>
                 <div className="mt-4 bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 text-center cursor-pointer">
                   View Details
                 </div>
