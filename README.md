@@ -4,7 +4,8 @@ Getting Started
 First, clone the repository to your local machine:
 
 git clone https://github.com/AbhinavKaintura/Real-Estate-Marketplace.git
-cd your-repository-name
+
+cd Real-Estate-Marketplace
 
 3. Install Dependencies
 Next, install the required dependencies for the project:
