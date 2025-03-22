@@ -45,24 +45,24 @@ const Predict = () => {
 
             console.log("Sending features:", featureObject); 
 
-            const response = await fetch("http://127.0.0.1:8000/predict/", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(featureObject)  
-            });
+            // const response = await fetch("http://127.0.0.1:8000/predict/", {
+            //     method: "POST",
+            //     headers: {
+            //         "Content-Type": "application/json"
+            //     },
+            //     body: JSON.stringify(featureObject)  
+            // });
 
-            console.log("Response:", response);
+            // console.log("Response:", response);
 
-            if (!response.ok) {
-                const errorText = await response.text();
-                throw new Error(`Server error (${response.status}): ${errorText}`);
-            }
+            // if (!response.ok) {
+            //     const errorText = await response.text();
+            //     throw new Error(`Server error (${response.status}): ${errorText}`);
+            // }
 
-            const data = await response.json();
-            console.log("Data:", data); 
-            setPrediction(data.predicted_price);
+            // const data = await response.json();
+            // console.log("Data:", data); 
+            setPrediction(1000000);
 
         } catch (err) {
             console.error('Prediction error:', err);
