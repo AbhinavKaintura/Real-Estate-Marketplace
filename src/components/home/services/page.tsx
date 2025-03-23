@@ -64,7 +64,7 @@ const Services = () => {
       image: auctionImg,
       imageAlt: 'Live Auction',
       imageSize: '4/3',
-      link: '/live-auction'
+      link: '/properties'
     },
     {
       title: 'Rental Property',

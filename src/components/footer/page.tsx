@@ -43,7 +43,7 @@ const Footer = () => {
     {
       title: 'Company',
       links: [
-        { name: 'About Us', href: '/about' },
+        { name: 'About Us', href: '/about-us' },
         { name: 'Careers', href: '/careers' },
         { name: 'Blog', href: '/blog' },
         { name: 'Press', href: '/press' },
@@ -70,10 +70,10 @@ const Footer = () => {
   ];
 
   const socialLinks = [
-    { icon: Instagram, href: 'https://instagram.com', label: 'Instagram' },
+    { icon: Instagram, href: 'https://www.instagram.com/enduranceestate', label: 'Instagram' },
     { icon: Twitter, href: 'https://twitter.com', label: 'Twitter' },
     { icon: Facebook, href: 'https://facebook.com', label: 'Facebook' },
-    { icon: Linkedin, href: 'https://linkedin.com', label: 'LinkedIn' },
+    { icon: Linkedin, href: 'https://www.linkedin.com/in/endurance-estate-243b50357/', label: 'LinkedIn' },
   ];
 
   return (
