@@ -3,12 +3,6 @@ import React from "react";
 import { useState } from "react";
 
 const Predict = () => {
-    // const features = ['Area', 'Bedrooms', 'Bathrooms', 'Floors', 'YearBuilt', 'Location', 'Condition', 'Garage'];
-
-    // Initialize state with null values to represent empty inputs
-    // const [inputValues, setInputValues] = useState<(number | null)[]>(
-    //     Array(features.length).fill(null)
-    // );
     const [area, setArea] = useState<string | null>(null);
     const [bedrooms, setBedrooms] = useState<string | null>(null);
     const [bathrooms, setBathrooms] = useState<string | null>(null);
