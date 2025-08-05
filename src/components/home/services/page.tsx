@@ -56,7 +56,7 @@ const Services = () => {
       image: predImg,
       imageAlt: 'Price Prediction',
       imageSize: '3/4',
-      link: '/price-prediction'
+      link: '/predict'
     },
     {
       title: 'Live Auction',

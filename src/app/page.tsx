@@ -19,7 +19,7 @@ export default function Home() {
         <Navbar/>
         <Hero/>
         <Link href="/auction-form">Form</Link>
-        <Link href="/agreement">Agreement</Link>
+        {/* <Link href="/agreement">Agreement</Link> */}
         <Services/>
         <Footer/>
       </main>

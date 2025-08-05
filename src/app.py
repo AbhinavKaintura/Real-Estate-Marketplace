@@ -10,9 +10,11 @@ model = joblib.load("house_price_model.pkl")
 # Create the FastAPI app
 app = FastAPI()
 
-# Allow CORS for your Next.js frontend (localhost:3000)
+# Allow CORS for your Next.js frontend
 origins = [
-    "http://localhost:3000",  # Allow your Next.js app
+    "http://localhost:3000",  # Allow your Next.js app (development)
+    "http://frontend:3000",   # Allow Docker frontend service
+    "http://127.0.0.1:3000",  # Allow local development
     # Add more origins if needed
 ]
 
@@ -35,6 +37,16 @@ class Features(BaseModel):
     Location: str  # This may need to be encoded
     Condition: str  # This may need to be encoded
     Garage: int
+
+# Health check endpoint
+@app.get("/health")
+async def health_check():
+    return {"status": "healthy", "service": "real-estate-ml-api"}
+
+# Root endpoint
+@app.get("/")
+async def root():
+    return {"message": "Real Estate ML API", "docs": "/docs"}
 
 # Endpoint to predict house price
 @app.post("/predict/")

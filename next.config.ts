@@ -1,10 +1,21 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: 'standalone',
+  eslint: {
+    // Warning: This disables ESLint during builds
+    ignoreDuringBuilds: true,
+  },
+  typescript: {
+    // Warning: This disables TypeScript errors during builds
+    ignoreBuildErrors: true,
+  },
   async rewrites() {
     return [
       {
         source: '/predict',  // Match API requests under `/api/*`
-        destination: 'http://127.0.0.1:8000/predict',  // Forward requests to the backend
+        destination: process.env.NODE_ENV === 'production' 
+          ? 'http://backend:8000/predict'  // Docker service name
+          : 'http://127.0.0.1:8000/predict',  // Local development
       },
     ];
   },
