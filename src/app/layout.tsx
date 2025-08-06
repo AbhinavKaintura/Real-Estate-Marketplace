@@ -34,7 +34,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Endurance Estates",
-  description: "App by ERYX Media",
+  description: "App by Team Endurance",
 };
 
 export default function RootLayout({
